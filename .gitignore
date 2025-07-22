@@ -1,0 +1,88 @@
+# ===================
+# Global
+# ===================
+node_modules/
+dist/
+build/
+.env
+.env.*.local
+*.env.local
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor & OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+Thumbs.db
+
+# ===================
+# Backend (Node/Express)
+# ===================
+/server/node_modules/
+/server/.env
+/server/.env.local
+/server/package-lock.json
+/server/dist/
+server/coverage/
+
+# Database-related
+*.sqlite
+*.sqlite3
+*.db
+*.pgsql
+*.dump
+
+# ORM Tools (e.g., Prisma, Sequelize)
+prisma/migrations/
+prisma/dev.db
+/seeds/
+
+# ===================
+# Frontend (React)
+# ===================
+/client/node_modules/
+/client/.env
+/client/.env.local
+/client/package-lock.json
+/client/build/
+client/coverage/
+
+# React Testing
+client/jest-test-results.json
+
+# ===================
+# Docker & Deployment (if used)
+# ===================
+docker-compose.override.yml
+*.pid
+*.seed.js
+*.seed.ts
+tmp/
+
+# ===================
+# Logs
+# ===================
+logs
+*.log
+*.gz
+log.txt
+
+# ===================
+# Misc
+# ===================
+*.tgz
+*.tar.gz
+*.zip
+*.bak
+*.tmp
+*.cache
+.cache/
+.cache-loader/
+coverage/
+readme.md

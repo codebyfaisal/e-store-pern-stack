@@ -1,27 +1,25 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import useSidebarStore from "../store/sidebarStore.js";
-import { LucideMenu, Maximize } from "lucide-react";
-import { FullscreenToggleButton } from "./index.js";
+import { useSidebarStore } from "../store/index.js";
+import { ListMinus } from "lucide-react";
 
 export default function Navbar() {
   const { isSidebarOpen, setIsSidebarOpen } = useSidebarStore();
-  const [isMaxScreen, setMaxScreen] = useState(false);
 
   return (
-    <nav className="w-full h-full px-2">
+    <nav className="w-full pl-2 lg:pl-4 pr-[9px] border-b border-gray-100 sticky">
       <div className="navbar bg-base-100 justify-between">
-        <div className="flex-">
+        <div className="flex">
           <button id="sidebar-toggle1">
-            <LucideMenu
+            <ListMinus
               className={`transition-transform duration-300 cursor-pointer ${
-                isSidebarOpen ? "lg:hidden" : ""
+                isSidebarOpen ? "lg:hidden" : "mr-4"
               }`}
             />
           </button>
         </div>
+        <h1 className="text-xl font-[501]">Welcome</h1>
         <div className="flex gap-2">
-          <FullscreenToggleButton />
           <input
             type="text"
             placeholder="Search"

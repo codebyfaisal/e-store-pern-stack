@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-play: "Play", "System-ui", monospace;
-  --font-hanken: "Hanken Grotesk", "System-ui", monospace;
+  --font-play: "Play", "System-ui", monospace !important;
+  --font-hanken: "Hanken Grotesk", "System-ui", monospace !important;
 }
 
 @layer base {
@@ -12,8 +12,14 @@
     @apply font-play;
     @apply font-normal;
   }
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
 }
-
 
 @plugin "daisyui" {
   themes: light, dark, cupcake, bumblebee, emerald, corporate, synthwave, retro,
@@ -21,4 +27,18 @@
     fantasy, wireframe, black, luxury, dracula, cmyk, autumn, business, acid,
     lemonade, night, coffee, winter, dim, nord, sunset, caramellatte, abyss,
     silk;
+}
+
+/* Custom Scrollbar */
+* {
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }

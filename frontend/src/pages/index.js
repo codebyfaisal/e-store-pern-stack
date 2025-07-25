@@ -1,4 +1,5 @@
 import Dashboard from "./Dashboard";
-import ProductPage from "./ProductPage";
+import Products from "./Products";
+import Product from "./Product";
 
-export { Dashboard, ProductPage };
+export { Dashboard, Products, Product };

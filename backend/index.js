@@ -21,7 +21,7 @@ app.use(helmet());
 
 app.use(arcjetMiddleware);
 
-app.get("/api/test", (req, res) => res.send("Ok 👍"));
+app.get("/", (req, res) => res.send("Ok 👍"));
 
 app.use("/api", bootstrapRouter);
 app.use("/api", userRouter);

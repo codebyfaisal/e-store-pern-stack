@@ -15,55 +15,78 @@ import {
   Database,
   CircleDollarSign,
   ClipboardMinus,
-  UserCircle,
   ShieldCheck,
+  ListOrdered,
+  Users2,
+  UserPlus,
+  User,
 } from "lucide-react";
-import { useSidebarStore } from "../store/index.js";
-
+import {
+  useApiDataStore,
+  useAuthStore,
+  useSidebarStore,
+} from "../store/index.js";
 const navigation = [
   {
-    main: [{ path: "dashboard", icon: LayoutPanelLeft }],
+    main: [{ path: "dashboard", icon: LayoutPanelLeft, label: "Dashboard" }],
   },
   {
     inventory: [
-      { path: "products", icon: Package },
-      { path: "create-product", icon: CirclePlus },
-      { path: "categories", icon: ChartBarStacked },
-      { path: "brands", icon: Badge },
-      { path: "qr-barcode", icon: QrCode },
+      { path: "products", icon: Package, label: "Products" },
+      { path: "products/new", icon: CirclePlus, label: "New Product" },
+      { path: "categories", icon: ChartBarStacked, label: "Categories" },
+      { path: "brands", icon: Badge, label: "Brands" },
+      { path: "qr-barcode", icon: QrCode, label: "QR / Barcode" },
     ],
   },
   {
     sales: [
-      { path: "sales-return", icon: CornerDownRight },
-      { path: "invoices", icon: Receipt },
+      { path: "orders", icon: ListOrdered, label: "Orders" },
+      { path: "invoices", icon: Receipt, label: "Invoices" },
+      { path: "sales-returns", icon: CornerDownRight, label: "Sales Return" },
     ],
   },
   {
-    customers: [{ path: "users", icon: UserCircle2Icon }],
+    Accounts: [
+      { path: "accounts/users", icon: Users2, label: "Users" },
+      { path: "accounts/invites", icon: UserPlus, label: "Invites" },
+      { path: "accounts/customers", icon: UserCircle2Icon, label: "Customers" },
+    ],
   },
   {
     reports: [
-      { path: "sales-report", icon: BarChart },
-      { path: "inventory-report", icon: Database },
-      { path: "profit-loss", icon: CircleDollarSign },
-      { path: "annual-report", icon: ClipboardMinus },
+      { path: "reports/sales", icon: BarChart, label: "Sales Report" },
+      { path: "reports/inventory", icon: Database, label: "Inventory Report" },
+      {
+        path: "reports/profit-loss",
+        icon: CircleDollarSign,
+        label: "Profit & Loss",
+      },
+      { path: "reports/annual", icon: ClipboardMinus, label: "Annual Report" },
     ],
   },
   {
-    admin: [
-      { path: "profile", icon: UserCircle },
-      { path: "security", icon: ShieldCheck },
+    User: [
+      { path: "user/profile", icon: User, label: "Profile" },
+      { path: "user/security", icon: ShieldCheck, label: "Security" },
     ],
   },
 ];
 
-function Sidebar() {
+function Sidebar({ permissions }) {
+  const { setLoading, loading } = useApiDataStore();
+  const { logout } = useAuthStore();
   const { isSidebarOpen, setIsSidebarOpen } = useSidebarStore();
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+
+  if (!localStorage.getItem("permissions")) {
+    logout();
+    localStorage.clear();
+    window.location.reload("/login");
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -92,11 +115,32 @@ function Sidebar() {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [isSidebarOpen]);
+  });
+
+  function filterNavigation(navigation, permissions) {
+    return navigation
+      .map((section) => {
+        const [key, items] = Object.entries(section)[0];
+
+        const filteredItems = items.filter((item) =>
+          permissions.includes(item.path)
+        );
+
+        if (filteredItems.length > 0) return { [key]: filteredItems };
+
+        return null;
+      })
+      .filter(Boolean);
+  }
+
+  const filteredNavigation = [
+    ...filterNavigation(navigation, permissions),
+    navigation[5],
+  ];
 
   return (
     <aside
-      className={`h-screen bg-neutral text-base-100 pl-6 pt-4.5 pr-0 transition-all duration-300 [&>*]:transition-all [&>*]:duration-300 absolute top-0 -left-100 lg:static z-[10000] group hover:lg:w-64 ${
+      className={`h-screen bg-base-100 pl-6 pt-4.5 pr-0 transition-all duration-300 [&>*]:transition-all [&>*]:duration-300 absolute top-0 -left-100 lg:static z-[10000] group hover:lg:w-64 ${
         isSidebarOpen ? "w-full max-w-72 left-0 lg:w-64" : "lg:w-20"
       }`}
       id="sidebar"
@@ -109,6 +153,9 @@ function Sidebar() {
         <button
           onClick={() => setIsSidebarOpen(false)}
           className="absolute top-1 right-6 z-[10000]"
+          style={{
+            boxShadow: "none",
+          }}
         >
           <ListMinus
             className={`transition-transform duration-300 cursor-pointer rotate-180 ${
@@ -118,10 +165,10 @@ function Sidebar() {
         </button>
       </div>
 
-      <div className="h-full pb-10">
-        <ul className="mt-8 flex flex-col gap-2 h-full overflow-y-scroll">
-          {navigation.map((section, index) => {
-            const sectionName = Object.keys(section)[0]; // Get the section name like 'inventory', 'sales', etc.
+      <div className="h-full pb-14 mt-10">
+        <ul className="flex flex-col gap-2 h-full overflow-y-scroll">
+          {filteredNavigation.map((section, index) => {
+            const sectionName = Object.keys(section)[0];
             const links = section[sectionName];
 
             return (
@@ -135,18 +182,28 @@ function Sidebar() {
                   {sectionName}
                 </li>
                 {/* Render Links in this Section */}
-                {links.map(({ path, icon: Icon }) => (
+                {links.map(({ path, icon: Icon, label }) => (
                   <li key={path}>
                     <NavLink
                       to={`/${path}`}
+                      end={path.split("/").length === 1}
                       className={({ isActive }) =>
-                        `flex items-center gap-3 text-[0.95rem] min-h-[40px] ${
-                          isActive ? "" : "opacity-50"
-                        }`
+                        [
+                          "flex items-center gap-2 text-[0.95rem] min-h-[35px]",
+                          !isActive && "opacity-40",
+                          path === "qr-barcode" && "cursor-not-allowed",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")
                       }
-                      onClick={() =>
-                        setIsSidebarOpen(windowSize.width < 1024 ? false : true)
-                      }
+                      onClick={() => {
+                        setLoading(
+                          path === "dashboard" ? false : loading && false
+                        );
+                        setIsSidebarOpen(
+                          windowSize.width < 1024 ? false : true
+                        );
+                      }}
                     >
                       <div
                         className={`min-w-[20px] ${
@@ -162,15 +219,15 @@ function Sidebar() {
                             : "opacity-0 invisible"
                         }`}
                       >
-                        {path}
+                        {label}
                       </span>
                     </NavLink>
                   </li>
                 ))}
                 <li
-                  className={`opacity-10 pr-4 ${isSidebarOpen ? "" : "pr-5"}`}
+                  className={`opacity-50 pr-4 ${isSidebarOpen ? "" : "pr-5"}`}
                 >
-                  <span className="border-b border-0 border-base-100 block w-full h-0 my-2"></span>
+                  <span className="border-b border-0 border-neutral-300 block w-full h-0 my-2"></span>
                 </li>
               </ul>
             );

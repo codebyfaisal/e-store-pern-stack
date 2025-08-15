@@ -1,0 +1,80 @@
+src
+├── App.css
+├── App.jsx
+├── components
+│   ├── Navbar.jsx
+│   ├── PrivateRoute.jsx
+│   ├── Sidebar.jsx
+│   ├── index.js
+│   ├── reports
+│   │   ├── ChartCard.jsx
+│   │   ├── KpiStats.jsx
+│   │   ├── ReportDataTable.jsx
+│   │   └── ReportHeader.jsx
+│   └── ui
+│       ├── ConfirmModal.jsx
+│       ├── DataTable.jsx
+│       ├── InputModal.jsx
+│       ├── Loading.jsx
+│       ├── Modal.jsx
+│       ├── NoItemError.jsx
+│       └── filters
+│           ├── Filters.jsx
+│           └── ReportFilters.jsx
+├── db
+│   └── db.js
+├── hooks
+│   ├── index.js
+│   ├── useCrudModals.js
+│   ├── useFilteredData.js
+│   ├── useSortConfig.jsx
+│   └── useSortedData.js
+├── index.css
+├── layouts
+│   ├── AuthLayout.jsx
+│   ├── MainLayout.jsx
+│   └── index.js
+├── main.jsx
+├── pages
+│   ├── Activities.jsx
+│   ├── Brands.jsx
+│   ├── Categories.jsx
+│   ├── Dashboard.jsx
+│   ├── Notfound.jsx
+│   ├── Orders.jsx
+│   ├── SalesReturn.jsx
+│   ├── auth
+│   │   ├── Login.jsx
+│   │   └── Register.jsx
+│   ├── index.js
+│   ├── invoices
+│   │   ├── InvoiceDetails.jsx
+│   │   └── Invoices.jsx
+│   ├── peoples
+│   │   ├── Customers.jsx
+│   │   ├── InvitedUsers.jsx
+│   │   └── Users.jsx
+│   ├── products
+│   │   ├── AddProduct.jsx
+│   │   ├── Product.jsx
+│   │   └── Products.jsx
+│   ├── reports
+│   │   ├── AnnualReport.jsx
+│   │   ├── InventoryReport.jsx
+│   │   ├── ProfitAndLossReport.jsx
+│   │   └── SalesReports.jsx
+│   └── user
+│       ├── Profile.jsx
+│       └── Security.jsx
+├── services
+│   └── api.js
+├── store
+│   ├── index.js
+│   ├── useApiDataStore.js
+│   ├── useAuthStore.js
+│   ├── useReportStore.js
+│   └── useSidebarStore.js
+└── utils
+    ├── getEntityStats.js
+    ├── normalizeDate.js
+    └── patchToast.js
